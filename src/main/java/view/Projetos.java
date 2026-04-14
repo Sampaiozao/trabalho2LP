@@ -1,4 +1,4 @@
-package forms;
+package view;
 
 import javax.swing.*;
 
@@ -16,4 +16,12 @@ public class Projetos {
     private JButton eliminarButton;
     private JButton visualizarButton;
     private JButton editarButton;
+
+    public JButton getCriarProjeto() {
+        return CriarProjeto;
+    }
+
+    public JList getList1() {
+        return list1;
+    }
 };

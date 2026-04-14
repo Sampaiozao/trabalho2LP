@@ -1,4 +1,4 @@
-package forms;
+package view;
 import javax.swing.*;
 
 public class TarefasEquipas {
