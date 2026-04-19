@@ -11,4 +11,41 @@ public class TarefasEquipas {
     private JButton removerButton;
     private JButton atribuirButton;
     private JList list1;
+
+    public JPanel getContentPane() {
+        return contentPane;
+    }
+
+    public JTabbedPane getTabbedPane1() {
+        return tabbedPane1;
+    }
+
+    public JButton getEliminarButton() {
+        return eliminarButton;
+    }
+
+    public JButton getEditarButton() {
+        return editarButton;
+    }
+
+    public JButton getAdicionarButton() {
+        return adicionarButton;
+    }
+
+    public JButton getAdicionarMembroButton() {
+        return adicionarMembroButton;
+    }
+
+    public JButton getRemoverButton() {
+        return removerButton;
+    }
+
+    public JButton getAtribuirButton() {
+        return atribuirButton;
+    }
+
+    public JList getList1() {
+        return list1;
+    }
 }
+
