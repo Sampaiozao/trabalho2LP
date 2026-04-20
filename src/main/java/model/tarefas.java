@@ -40,8 +40,9 @@ public class tarefas {
 
     @Override
     public String toString() {
-        return "tarefas{" +
-                "nome='" + nome + '\'' +
-                '}';
+        if (membro != null && !membro.trim().isEmpty()) {
+            return nome + " [" + membro + "]";
+        }
+        return nome;
     }
 }

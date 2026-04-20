@@ -39,4 +39,12 @@ public class Projetos {
     public JButton getEditarButton() {
         return editarButton;
     }
+
+    public JButton getGuardarButton() {
+        return guardarButton;
+    }
+
+    public JButton getCriarButton() {
+        return criarButton;
+    }
 };

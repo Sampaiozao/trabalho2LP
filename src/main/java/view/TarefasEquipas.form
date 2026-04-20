@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="contentPane" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="506" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -65,11 +65,16 @@
                       <text value="A fazer"/>
                     </properties>
                   </component>
-                  <vspacer id="26dc7">
+                  <component id="42f7f" class="javax.swing.JList" binding="listaFazer">
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="50"/>
+                      </grid>
                     </constraints>
-                  </vspacer>
+                    <properties>
+                      <model/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
               <grid id="b02c1" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -88,11 +93,16 @@
                       <text value="Em Progresso"/>
                     </properties>
                   </component>
-                  <vspacer id="2adba">
+                  <component id="db3ee" class="javax.swing.JList" binding="listaProgresso">
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="50"/>
+                      </grid>
                     </constraints>
-                  </vspacer>
+                    <properties>
+                      <model/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
               <grid id="a6bf1" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -111,11 +121,14 @@
                       <text value="Concluido"/>
                     </properties>
                   </component>
-                  <vspacer id="d38e2">
+                  <component id="1240f" class="javax.swing.JList" binding="listaConcluido">
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="50"/>
+                      </grid>
                     </constraints>
-                  </vspacer>
+                    <properties/>
+                  </component>
                 </children>
               </grid>
             </children>
@@ -123,7 +136,7 @@
           <grid id="c55b8" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Equipas"/>
+              <tabbedpane title="Equipa"/>
             </constraints>
             <properties/>
             <border type="none"/>

@@ -4,6 +4,8 @@ import model.projetos;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import java.io.File;
 
 public class projetoController {
     private Projetos view;
@@ -21,6 +23,8 @@ public class projetoController {
         this.view.getEliminarButton().addActionListener(e -> eliminarProjeto());
         this.view.getGestaoButton().addActionListener(e -> gestaoProjeto());
         this.view.getEditarButton().addActionListener(e -> editarProjeto());
+        this.view.getGuardarButton().addActionListener(e -> guardarDados());
+        this.view.getCarregarButton().addActionListener(e -> carregarDados());
         this.view.getList1().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -74,12 +78,10 @@ public class projetoController {
                 listaProjetos.remove(index);
                 listaModelo.remove(index);
             }
-
         }
         else {
             JOptionPane.showMessageDialog(view.getContentPane(),"Nenhum projeto selecionado");
         }
-
     }
 
     public void editarProjeto(){
@@ -131,12 +133,105 @@ public class projetoController {
 
             view.TarefasEquipas janelaTarefas = new view.TarefasEquipas();
             frameGestao.setContentPane(janelaTarefas.getContentPane());
+            TarefasEquipaController controllerTarefas = new TarefasEquipaController(janelaTarefas, projetoSelecionado);
 
             frameGestao.setLocationRelativeTo(null);
             frameGestao.setVisible(true);
 
         } else {
             JOptionPane.showMessageDialog(view.getContentPane(), "Selecione um projeto na lista para gerir");
+        }
+    }
+    public void guardarDados() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar Dados do Kanban");
+
+        int escolha = fileChooser.showSaveDialog(view.getContentPane());
+
+        if (escolha == JFileChooser.APPROVE_OPTION) {
+            java.io.File ficheiroEscolhido = fileChooser.getSelectedFile();
+            String caminho = ficheiroEscolhido.getAbsolutePath();
+
+            if (!caminho.endsWith(".txt")) {
+                caminho += ".txt";
+            }
+
+            try {
+                java.util.ArrayList<String> linhas = new java.util.ArrayList<>();
+                for (projetos p : listaProjetos) {
+                    linhas.add("P;" + p.getNome());
+                    if (p.getEquipaProjeto() != null) {
+                        for (String membro : p.getEquipaProjeto().getMembro()) {
+                            linhas.add("E;" + membro);
+                        }
+                    }
+                    for (model.tarefas t : p.getListaTarefas()) {
+                        linhas.add("T;" + t.getNome() + ";" + t.getEstado() + ";" + t.getMembro());
+                    }
+                }
+
+                String[] arrayDados = linhas.toArray(new String[0]);
+
+                // AQUI ESTÁ: Usando o nome completo como pediste!
+                trabalho2.IODataClass io = new trabalho2.IODataClass();
+                io.writeData(caminho, arrayDados);
+
+                JOptionPane.showMessageDialog(view.getContentPane(), "Dados guardados com sucesso!");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao guardar: " + ex.getMessage());
+            }
+        }
+    }
+
+    public void carregarDados() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Selecionar ficheiro Kanban (.txt)");
+
+        int escolha = fileChooser.showOpenDialog(view.getContentPane());
+
+        if (escolha == JFileChooser.APPROVE_OPTION) {
+            java.io.File ficheiroEscolhido = fileChooser.getSelectedFile();
+            String caminho = ficheiroEscolhido.getAbsolutePath();
+
+            try {
+                // AQUI ESTÁ: Usando o nome completo como pediste!
+                trabalho2.IODataClass io = new trabalho2.IODataClass();
+                String[] linhasLidas = io.loadData(caminho);
+
+                listaProjetos.clear();
+                projetos projetoAtual = null;
+
+                for (String linha : linhasLidas) {
+                    String[] partes = linha.split(";");
+
+                    if (partes[0].equals("P")) {
+                        projetoAtual = new projetos(partes[1]);
+                        projetoAtual.setEquipaProjeto(new model.equipa(1));
+                        listaProjetos.add(projetoAtual);
+                    } else if (partes[0].equals("E") && projetoAtual != null) {
+                        projetoAtual.getEquipaProjeto().adicionarMembro(partes[1]);
+                    } else if (partes[0].equals("T") && projetoAtual != null) {
+                        model.tarefas novaTarefa = new model.tarefas(partes[1]);
+                        novaTarefa.setEstado(Integer.parseInt(partes[2]));
+                        if (!partes[3].equals("null")) {
+                            novaTarefa.setMembro(partes[3]);
+                        }
+                        projetoAtual.adicionarTarefas(novaTarefa);
+                    }
+                }
+
+                listaModelo.clear();
+                for (projetos p : listaProjetos) {
+                    listaModelo.addElement(p.getNome());
+                }
+
+                JOptionPane.showMessageDialog(view.getContentPane(), "Dados carregados com sucesso!");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view.getContentPane(),
+                        "Erro ao carregar o ficheiro. Certifique-se de que é um ficheiro válido do Kanban.");
+            }
         }
     }
     }

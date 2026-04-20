@@ -11,6 +11,21 @@ public class TarefasEquipas {
     private JButton removerButton;
     private JButton atribuirButton;
     private JList list1;
+    private JList listaFazer;
+    private JList listaProgresso;
+    private JList listaConcluido;
+
+    public JList getListaFazer() {
+        return listaFazer;
+    }
+
+    public JList getListaProgresso() {
+        return listaProgresso;
+    }
+
+    public JList getListaConcluido() {
+        return listaConcluido;
+    }
 
     public JPanel getContentPane() {
         return contentPane;
