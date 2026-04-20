@@ -5,7 +5,6 @@ import model.projetos;
 import javax.swing.*;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
-import java.io.File;
 
 public class projetoController {
     private Projetos view;
@@ -172,14 +171,13 @@ public class projetoController {
 
                 String[] arrayDados = linhas.toArray(new String[0]);
 
-                // AQUI ESTÁ: Usando o nome completo como pediste!
                 trabalho2.IODataClass io = new trabalho2.IODataClass();
                 io.writeData(caminho, arrayDados);
 
-                JOptionPane.showMessageDialog(view.getContentPane(), "Dados guardados com sucesso!");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Dados guardados com sucesso");
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao guardar: " + ex.getMessage());
+                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao guardar " + ex.getMessage());
             }
         }
     }
@@ -195,7 +193,6 @@ public class projetoController {
             String caminho = ficheiroEscolhido.getAbsolutePath();
 
             try {
-                // AQUI ESTÁ: Usando o nome completo como pediste!
                 trabalho2.IODataClass io = new trabalho2.IODataClass();
                 String[] linhasLidas = io.loadData(caminho);
 
@@ -226,11 +223,10 @@ public class projetoController {
                     listaModelo.addElement(p.getNome());
                 }
 
-                JOptionPane.showMessageDialog(view.getContentPane(), "Dados carregados com sucesso!");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Dados carregados com sucesso");
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view.getContentPane(),
-                        "Erro ao carregar o ficheiro. Certifique-se de que é um ficheiro válido do Kanban.");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao carregar o ficheiro");
             }
         }
     }
