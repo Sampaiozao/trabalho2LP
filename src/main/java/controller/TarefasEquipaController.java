@@ -177,7 +177,7 @@ public class TarefasEquipaController {
                 atualizarListas();
             }
         } else if (nome != null) {
-            JOptionPane.showMessageDialog(view.getContentPane(), "O nome do membro não pode estar vazio!");
+            JOptionPane.showMessageDialog(view.getContentPane(), "O nome do membro não pode estar vazio");
         }
     }
     public void removerMembro() {
