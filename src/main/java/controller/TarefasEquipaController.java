@@ -128,13 +128,8 @@ public class TarefasEquipaController {
 
             String[] opcoes = {"A Fazer", "Em Progresso", "Concluído"};
             int estadoEscolhido = JOptionPane.showOptionDialog(view.getContentPane(),
-                    "Em que estado está a tarefa '" + tarefaSelecionada + "' agora?",
-                    "Estado da Tarefa",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    opcoes,
-                    opcoes[tarefaSelecionada.getEstado()]);
+                    "Em que estado está a tarefa?", "Estado da Tarefa", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, opcoes, opcoes[tarefaSelecionada.getEstado()]);
 
             if (estadoEscolhido >= 0 && estadoEscolhido <= 2) {
                 tarefaSelecionada.setEstado(estadoEscolhido);
@@ -175,10 +170,7 @@ public class TarefasEquipaController {
             boolean jaExiste = projetoAtual.getEquipaProjeto().getMembro().contains(nomeLimpo);
 
             if (jaExiste) {
-                JOptionPane.showMessageDialog(view.getContentPane(),
-                        "Já existe um membro com o nome " + nomeLimpo + " nesta equipa.",
-                        "Aviso",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(view.getContentPane(), "Ja existe um membro com o mesmo nome");
             } else {
                 projetoAtual.getEquipaProjeto().adicionarMembro(nomeLimpo);
 
@@ -193,8 +185,7 @@ public class TarefasEquipaController {
 
         if (membroSelecionado != null) {
 
-            int resposta = JOptionPane.showConfirmDialog(view.getContentPane(),
-                    "Tem a certeza que deseja remover " + membroSelecionado + " da equipa?", "Confirmar remover", JOptionPane.YES_NO_OPTION);
+            int resposta = JOptionPane.showConfirmDialog(view.getContentPane(), "Tem a certeza que deseja remover " + membroSelecionado + " da equipa?", "Confirmar remover", JOptionPane.YES_NO_OPTION);
 
             if (resposta == JOptionPane.YES_OPTION) {
 
@@ -202,7 +193,7 @@ public class TarefasEquipaController {
 
                 for (tarefas t : projetoAtual.getListaTarefas()) {
                     if (membroSelecionado.equals(t.getMembro())) {
-                        t.setMembro(null); // Retira a pessoa da tarefa
+                        t.setMembro(null);
                     }
                 }
 
@@ -211,7 +202,7 @@ public class TarefasEquipaController {
             }
 
         } else {
-            JOptionPane.showMessageDialog(view.getContentPane(), "Por favor, selecione um membro na lista para remover.");
+            JOptionPane.showMessageDialog(view.getContentPane(), "Selecione um membro na lista para remover");
         }
     }
     public void atribuirTarefa() {
@@ -221,7 +212,7 @@ public class TarefasEquipaController {
 
             int numeroDeTarefas = projetoAtual.getListaTarefas().size();
             if (numeroDeTarefas == 0) {
-                JOptionPane.showMessageDialog(view.getContentPane(), "Ainda não existem tarefas neste projeto para atribuir");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Não existem tarefas neste projeto para atribuir");
                 return;
             }
 
@@ -234,22 +225,21 @@ public class TarefasEquipaController {
                     "Atribuir Tarefa",
                     JOptionPane.QUESTION_MESSAGE,
                     null,
-                    arrayTarefas, // As opções do dropdown
-                    arrayTarefas[0] // A opção que aparece por defeito
+                    arrayTarefas,
+                    arrayTarefas[0]
             );
 
             if (tarefaEscolhida != null) {
 
                 tarefaEscolhida.setMembro(membroSelecionado);
 
-                JOptionPane.showMessageDialog(view.getContentPane(),
-                        "Tarefa '" + tarefaEscolhida.getNome() + "' atribuída a " + membroSelecionado + " com sucesso!");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Tarefa '" + tarefaEscolhida.getNome() + "' atribuída a " + membroSelecionado);
 
                 atualizarListas();
             }
 
         } else {
-            JOptionPane.showMessageDialog(view.getContentPane(), "Por favor, selecione um membro na lista primeiro.");
+            JOptionPane.showMessageDialog(view.getContentPane(), "Selecione um membro na lista primeiro");
         }
     }
 
