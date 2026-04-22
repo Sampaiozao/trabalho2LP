@@ -167,10 +167,10 @@ public class projetoController {
                 trabalho2.IODataClass io = new trabalho2.IODataClass();
                 io.writeData(caminho, linhas.toArray(new String[0]));
 
-                JOptionPane.showMessageDialog(view.getContentPane(), "Guardado com sucesso!");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Guardado");
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view.getContentPane(), "Erro: " + ex.getMessage());
+                JOptionPane.showMessageDialog(view.getContentPane(), "Erro " + ex.getMessage());
             }
         }
     }
@@ -212,10 +212,10 @@ public class projetoController {
                     listaModelo.addElement(p.getNome());
                 }
 
-                JOptionPane.showMessageDialog(view.getContentPane(), "Carregado com sucesso!");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Carregado");
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao carregar o ficheiro.");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao carregar o ficheiro");
             }
         }
     }
