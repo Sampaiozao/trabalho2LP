@@ -1,13 +1,8 @@
 package controller;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import view.Projetos;
 import model.projetos;
 
 import javax.swing.*;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 
@@ -147,50 +142,69 @@ public class projetoController {
     }
     public void guardarDados() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Guardar Projeto em JSON");
 
-        int escolha = fileChooser.showSaveDialog(view.getContentPane());
-
-        if (escolha == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showSaveDialog(view.getContentPane()) == JFileChooser.APPROVE_OPTION) {
             String caminho = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!caminho.endsWith(".txt")) caminho += ".txt";
 
-            if (!caminho.endsWith(".json")) {
-                caminho += ".json";
-            }
+            try {
+                java.util.ArrayList<String> linhas = new java.util.ArrayList<>();
 
-            try (FileWriter writer = new FileWriter(caminho)) {
+                for (model.projetos p : listaProjetos) {
+                    linhas.add("PROJETO;" + p.getNome());
 
-                Gson gson = new Gson();
+                    if (p.getEquipaProjeto() != null) {
+                        for (String membro : p.getEquipaProjeto().getMembro()) {
+                            linhas.add("EQUIPA;" + membro);
+                        }
+                    }
 
-                gson.toJson(listaProjetos, writer);
+                    for (model.tarefas t : p.getListaTarefas()) {
+                        linhas.add("TAREFA;" + t.getNome() + ";" + t.getEstado() + ";" + t.getMembro());
+                    }
+                }
 
-                JOptionPane.showMessageDialog(view.getContentPane(), "Dados guardados com sucesso em JSON");
+                trabalho2.IODataClass io = new trabalho2.IODataClass();
+                io.writeData(caminho, linhas.toArray(new String[0]));
+
+                JOptionPane.showMessageDialog(view.getContentPane(), "Guardado com sucesso!");
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao guardar: " + ex.getMessage());
+                JOptionPane.showMessageDialog(view.getContentPane(), "Erro: " + ex.getMessage());
             }
         }
     }
 
     public void carregarDados() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Carregar Projeto JSON");
 
-        int escolha = fileChooser.showOpenDialog(view.getContentPane());
-
-        if (escolha == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showOpenDialog(view.getContentPane()) == JFileChooser.APPROVE_OPTION) {
             String caminho = fileChooser.getSelectedFile().getAbsolutePath();
 
-            try (FileReader reader = new FileReader(caminho)) {
+            try {
+                trabalho2.IODataClass io = new trabalho2.IODataClass();
+                String[] linhasLidas = io.loadData(caminho);
 
-                Gson gson = new Gson();
+                listaProjetos.clear();
+                model.projetos projetoAtual = null;
 
-                Type tipoLista = new TypeToken<ArrayList<projetos>>(){}.getType();
+                for (String linha : linhasLidas) {
+                    String[] partes = linha.split(";");
 
-                listaProjetos = gson.fromJson(reader, tipoLista);
+                    if (partes[0].equals("PROJETO")) {
+                        projetoAtual = new model.projetos(partes[1]);
+                        projetoAtual.setEquipaProjeto(new model.equipa(1));
+                        listaProjetos.add(projetoAtual);
 
-                if (listaProjetos == null) {
-                    listaProjetos = new ArrayList<>();
+                    } else if (partes[0].equals("EQUIPA")) {
+                        projetoAtual.getEquipaProjeto().adicionarMembro(partes[1]);
+
+                    } else if (partes[0].equals("TAREFA")) {
+                        model.tarefas novaTarefa = new model.tarefas(partes[1]);
+                        novaTarefa.setEstado(Integer.parseInt(partes[2]));
+                        if (!partes[3].equals("null")) novaTarefa.setMembro(partes[3]);
+                        projetoAtual.adicionarTarefas(novaTarefa);
+                    }
                 }
 
                 listaModelo.clear();
@@ -198,10 +212,10 @@ public class projetoController {
                     listaModelo.addElement(p.getNome());
                 }
 
-                JOptionPane.showMessageDialog(view.getContentPane(), "Dados carregados");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Carregado com sucesso!");
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao carregar o ficheiro: " + ex.getMessage());
+                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao carregar o ficheiro.");
             }
         }
     }
