@@ -139,7 +139,6 @@ public class projetoController {
             frameGestao.setContentPane(janelaTarefas.getContentPane());
             TarefasEquipaController controllerTarefas = new TarefasEquipaController(janelaTarefas, projetoSelecionado);
 
-            frameGestao.setLocationRelativeTo(null);
             frameGestao.setVisible(true);
 
         } else {
