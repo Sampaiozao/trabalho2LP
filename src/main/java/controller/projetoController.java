@@ -1,8 +1,13 @@
 package controller;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import view.Projetos;
 import model.projetos;
 
 import javax.swing.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 
@@ -143,90 +148,61 @@ public class projetoController {
     }
     public void guardarDados() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Guardar Dados do Kanban");
+        fileChooser.setDialogTitle("Guardar Projeto em JSON");
 
         int escolha = fileChooser.showSaveDialog(view.getContentPane());
 
         if (escolha == JFileChooser.APPROVE_OPTION) {
-            java.io.File ficheiroEscolhido = fileChooser.getSelectedFile();
-            String caminho = ficheiroEscolhido.getAbsolutePath();
+            String caminho = fileChooser.getSelectedFile().getAbsolutePath();
 
-            if (!caminho.endsWith(".txt")) {
-                caminho += ".txt";
+            if (!caminho.endsWith(".json")) {
+                caminho += ".json";
             }
 
-            try {
-                java.util.ArrayList<String> linhas = new java.util.ArrayList<>();
-                for (projetos p : listaProjetos) {
-                    linhas.add("P;" + p.getNome());
-                    if (p.getEquipaProjeto() != null) {
-                        for (String membro : p.getEquipaProjeto().getMembro()) {
-                            linhas.add("E;" + membro);
-                        }
-                    }
-                    for (model.tarefas t : p.getListaTarefas()) {
-                        linhas.add("T;" + t.getNome() + ";" + t.getEstado() + ";" + t.getMembro());
-                    }
-                }
+            try (FileWriter writer = new FileWriter(caminho)) {
 
-                String[] arrayDados = linhas.toArray(new String[0]);
+                Gson gson = new Gson();
 
-                trabalho2.IODataClass io = new trabalho2.IODataClass();
-                io.writeData(caminho, arrayDados);
+                gson.toJson(listaProjetos, writer);
 
-                JOptionPane.showMessageDialog(view.getContentPane(), "Dados guardados com sucesso");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Dados guardados com sucesso em JSON");
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao guardar " + ex.getMessage());
+                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao guardar: " + ex.getMessage());
             }
         }
     }
 
     public void carregarDados() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Selecionar ficheiro Kanban (.txt)");
+        fileChooser.setDialogTitle("Carregar Projeto JSON");
 
         int escolha = fileChooser.showOpenDialog(view.getContentPane());
 
         if (escolha == JFileChooser.APPROVE_OPTION) {
-            java.io.File ficheiroEscolhido = fileChooser.getSelectedFile();
-            String caminho = ficheiroEscolhido.getAbsolutePath();
+            String caminho = fileChooser.getSelectedFile().getAbsolutePath();
 
-            try {
-                trabalho2.IODataClass io = new trabalho2.IODataClass();
-                String[] linhasLidas = io.loadData(caminho);
+            try (FileReader reader = new FileReader(caminho)) {
 
-                listaProjetos.clear();
-                projetos projetoAtual = null;
+                Gson gson = new Gson();
 
-                for (String linha : linhasLidas) {
-                    String[] partes = linha.split(";");
+                Type tipoLista = new TypeToken<ArrayList<projetos>>(){}.getType();
 
-                    if (partes[0].equals("P")) {
-                        projetoAtual = new projetos(partes[1]);
-                        projetoAtual.setEquipaProjeto(new model.equipa(1));
-                        listaProjetos.add(projetoAtual);
-                    } else if (partes[0].equals("E") && projetoAtual != null) {
-                        projetoAtual.getEquipaProjeto().adicionarMembro(partes[1]);
-                    } else if (partes[0].equals("T") && projetoAtual != null) {
-                        model.tarefas novaTarefa = new model.tarefas(partes[1]);
-                        novaTarefa.setEstado(Integer.parseInt(partes[2]));
-                        if (!partes[3].equals("null")) {
-                            novaTarefa.setMembro(partes[3]);
-                        }
-                        projetoAtual.adicionarTarefas(novaTarefa);
-                    }
+                listaProjetos = gson.fromJson(reader, tipoLista);
+
+                if (listaProjetos == null) {
+                    listaProjetos = new ArrayList<>();
                 }
 
                 listaModelo.clear();
-                for (projetos p : listaProjetos) {
+                for (model.projetos p : listaProjetos) {
                     listaModelo.addElement(p.getNome());
                 }
 
-                JOptionPane.showMessageDialog(view.getContentPane(), "Dados carregados com sucesso");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Dados carregados");
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao carregar o ficheiro");
+                JOptionPane.showMessageDialog(view.getContentPane(), "Erro ao carregar o ficheiro: " + ex.getMessage());
             }
         }
     }

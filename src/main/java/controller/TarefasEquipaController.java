@@ -112,7 +112,6 @@ public class TarefasEquipaController {
 
         if (tarefaSelecionada != null) {
 
-            String nomeAntigo = tarefaSelecionada.getNome();
 
             int resposta = JOptionPane.showConfirmDialog(view.getContentPane(),"Deseja alterar o nome?", "Mudar nome", JOptionPane.YES_NO_OPTION);
 

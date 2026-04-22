@@ -44,7 +44,4 @@ public class Projetos {
         return guardarButton;
     }
 
-    public JButton getCriarButton() {
-        return criarButton;
-    }
 };

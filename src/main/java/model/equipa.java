@@ -10,13 +10,6 @@ public class equipa {
         this.membro = new ArrayList<>();
     }
 
-    public int getNumeroEquipa() {
-        return numeroEquipa;
-    }
-
-    public void setNumeroEquipa(int numeroEquipa) {
-        this.numeroEquipa = numeroEquipa;
-    }
 
     public ArrayList<String> getMembro() {
         return membro;
